@@ -5,7 +5,7 @@ Checkpoints are serialized using Python's `pickle` module to ensure data integri
 
 #Usage  
 Use the -rf flag on command execution followed by the path of checkpoint to be loaded  
-$python3 ga.py -f (xml file of experiemnt) -(flags used in original experiemnt) -rf (path to checkpoint file)
+$python3 ga.py -f (xml file of experiment) -(flags used in original experiment) -rf (path to checkpoint file)
 
 example
 ```
