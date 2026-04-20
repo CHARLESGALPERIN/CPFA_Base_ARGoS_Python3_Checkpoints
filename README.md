@@ -1,3 +1,17 @@
+#(4/20/2026)  
+Added save-and-continue functionality for long-running genetic algorithm experimental workflows.
+This mechanism checkpoints experiment state after each generation, allowing computationally intensive configurations to be executed incrementally rather than as a single uninterrupted run. Experiments may be safely paused and resumed, supporting large populations and extended evaluation horizons.
+Checkpoints are serialized using Python's `pickle` module to ensure data integrity.
+
+#Usage  
+Use the -rf flag on command execution followed by the path of checkpoint to be loaded  
+$python3 ga.py -f (xml file of experiemnt) -(flags used in original experiemnt) -rf (path to checkpoint file)
+
+example
+```
+$python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 k-10 -rf gapy_saves/Clustered...(path to checkpoint file)
+```
+
 #CPFA-ARGoS
 
 ARGoS (Autonomous Robots Go Swarming) is a multi-physics robot simulator. iAnt-ARGoS is an extension to ARGoS that implements the CPFA-ARGoS algorithm and provides a mechanism for performing experiments with iAnts.
