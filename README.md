@@ -32,7 +32,7 @@ $python3 ga.py -f (xml file of experiment) -(flags used in original experiment) 
 
 example:
 ```
-python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 k-10 -rf gapy_saves/Clustered_CP...(path to checkpoint).../filename.pkl
+python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 -k 10 -rf gapy_saves/Clustered_CP...(path to checkpoint).../filename.pkl
 ```
 * Timestamps also added to program outputs and loggging files.
 #  
