@@ -1,17 +1,25 @@
 #(4/20/2026)  
 Added save-and-continue functionality for long-running genetic algorithm experimental workflows.
 This mechanism checkpoints experiment state after each generation, allowing computationally intensive configurations to be executed incrementally rather than as a single uninterrupted run. Experiments may be safely paused and resumed, supporting large populations and extended evaluation horizons.
-Checkpoints are serialized using Python's `pickle` module to ensure data integrity.
+Checkpoints are serialized using Python's `pickle` module to ensure data integrity.  
+Numpy is also now a required module, simply install with either command based on your environment.
+```
+sudo apt install python3-numpy
+```
+```
+pip install numpy
+```
 
-#Usage  
+#New Feature Usage  
 Use the -rf flag on command execution followed by the path of checkpoint to be loaded  
 $python3 ga.py -f (xml file of experiment) -(flags used in original experiment) -rf (path to checkpoint file)
 
-example
+example:
 ```
 $python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 k-10 -rf gapy_saves/Clustered...(path to checkpoint file)
-```
-
+```  
+#  
+#  
 #CPFA-ARGoS
 
 ARGoS (Autonomous Robots Go Swarming) is a multi-physics robot simulator. iAnt-ARGoS is an extension to ARGoS that implements the CPFA-ARGoS algorithm and provides a mechanism for performing experiments with iAnts.
