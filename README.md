@@ -1,23 +1,40 @@
 #(4/20/2026)  
-Added save-and-continue functionality for long-running genetic algorithm experimental workflows.
+* Genetic Algorithm 'ga.py' now functional in Python3.
+
+* Added save-and-continue functionality for long-running genetic algorithm experimental workflows.
 This mechanism checkpoints experiment state after each generation, allowing computationally intensive configurations to be executed incrementally rather than as a single uninterrupted run. Experiments may be safely paused and resumed, supporting large populations and extended evaluation horizons.
 Checkpoints are serialized using Python's `pickle` module to ensure data integrity.  
-Numpy is also now a required module, simply install with either command based on your environment.
+* Numpy is also now a required module, simply install with either command based on your environment.
 ```
 sudo apt install python3-numpy
 ```
 ```
 pip install numpy
 ```
+* To run an experiment using the genetic algorithm, simply run 'ga.py' from the repo installation directory. The XML files for running the experiemnts will be located in the '/experiments' directory. The format should be:
+  $python3 ga.py -f (xml file of the experiment)  
+example:  
+```
+python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml
+```
+The parameter settings should be changed by the experiemnt xml loaded, but should additional control be required the optional flags will be listed as follows:  
+-r    (number of robots = int)  
+-m    (mutation rate = float)  
+-e    (number of elites = int)  
+-g    (number of maximum generations = int)  
+-p    (population size = int)  
+-t    (experiment time in seconds = int)  
+-k    (evaluations per population = int)  
 
 #New Feature Usage  
-Use the -rf flag on command execution followed by the path of checkpoint to be loaded  
+Simply append the -rf flag on command execution followed by the path of checkpoint to be loaded  
 $python3 ga.py -f (xml file of experiment) -(flags used in original experiment) -rf (path to checkpoint file)
 
 example:
 ```
-$python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 k-10 -rf gapy_saves/Clustered...(path to checkpoint file)
-```  
+python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 k-10 -rf gapy_saves/Clustered_CP...(path to checkpoint).../filename.pkl
+```
+* Timestamps also added to program outputs and loggging files.
 #  
 #  
 #CPFA-ARGoS
