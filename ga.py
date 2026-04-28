@@ -145,7 +145,9 @@ class iAntGA(object):
             self.population = loaded_ga.population # currently strings
             self.fitness = loaded_ga.fitness
             self.current_gen = loaded_ga.current_gen
+            self.not_evolved_idx = loaded_ga.not_evolved_idx
             self.not_evolved_count = loaded_ga.not_evolved_count
+            self.prev_not_evolved_count = loaded_ga.prev_not_evolved_count
             # Turn loaded string data back to lxml
             self.population = [etree.fromstring(xml_str) for xml_str in self.population]
             if self.prev_population is not None:
