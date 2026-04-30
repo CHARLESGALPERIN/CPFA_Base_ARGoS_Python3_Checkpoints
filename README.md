@@ -1,42 +1,3 @@
-#(4/20/2026)  
-* Genetic Algorithm 'ga.py' now functional in Python3.
-
-* Added save-and-continue functionality for long-running genetic algorithm experimental workflows.
-This mechanism checkpoints experiment state after each generation, allowing computationally intensive configurations to be executed incrementally rather than as a single uninterrupted run. Experiments may be safely paused and resumed, supporting large populations and extended evaluation horizons.
-Checkpoints are serialized using Python's `pickle` module to ensure data integrity.  
-* Numpy is also now a required module, simply install with either command based on your environment.
-```
-sudo apt install python3-numpy
-```
-```
-pip install numpy
-```
-* To run an experiment using the genetic algorithm, simply run 'ga.py' from the repo installation directory. The XML files for running the experiemnts will be located in the '/experiments' directory. The format should be:
-  $python3 ga.py -f (xml file of the experiment)  
-example:  
-```
-python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml
-```
-The parameter settings should be changed by the experiemnt xml loaded, but should additional control be required the optional flags will be listed as follows:  
--r    (number of robots = int)  
--m    (mutation rate = float)  
--e    (number of elites = int)  
--g    (number of maximum generations = int)  
--p    (population size = int)  
--t    (experiment time in seconds = int)  
--k    (evaluations per population = int)  
-
-#New Feature Usage  
-Simply append the -rf flag on command execution followed by the path of checkpoint to be loaded  
-$python3 ga.py -f (xml file of experiment) -(flags used in original experiment) -rf (path to checkpoint file)
-
-example:
-```
-python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 -k 10 -rf gapy_saves/Clustered_CP...(path to checkpoint).../filename.pkl
-```
-* Timestamps also added to program outputs and loggging files.
-#  
-#  
 #CPFA-ARGoS
 
 ARGoS (Autonomous Robots Go Swarming) is a multi-physics robot simulator. iAnt-ARGoS is an extension to ARGoS that implements the CPFA-ARGoS algorithm and provides a mechanism for performing experiments with iAnts.
@@ -159,8 +120,86 @@ To run an experiment launch ARGoS with the XML configuration file for your syste
   ```
   $ argos3 -c experiments/experiment_file.xml
   ```
+#  
+#
+#####GA Infrastructure Update (April 2026)  
+The Genetic Algorithm framework (ga.py) has been modernized for Python 3 and optimized for high-performance research workflows.
 
+Core Enhancements:  
+* Multiprocessing Engine: Simulations now run in parallel using a worker pool, drastically reducing the time required for generational evaluations.
 
+* Checkpoint & Resume: Added save-and-continue functionality. The GA serializes the full experiment state (population, fitness, and evolutionary metadata) after each generation.
+
+* Fault Tolerance: Includes a "Lost & Found" recovery system that automatically safeguards data from interrupted or crashed runs before starting new experiments.
+
+* Stable Sorting: Fixed a legacy issue where identical fitness scores caused the program to crash during population ranking.
+
+Installation & Dependencies
+In addition to the system-level ARGoS dependencies, the following Python modules are now required:
+
+* NumPy: For fitness data management.
+
+* tqdm: For real-time progress tracking of simulations.
+
+Installation Command example:
+```
+pip install numpy tqdm
+```
+
+Usage & Configuration
+Run ga.py from the repository root. Experiment XML files must be located in the /experiments directory.
+
+Basic Execution:
+```
+python3 ga.py -f (xml_file)
+```
+```
+python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml
+```
+Optional Control Flags:
+
+-r  (robots): Number of robots.  
+-m  (mutation rate): Probability of parameter mutation (float).  
+-e  (elites): Number of top individuals to preserve.  
+-g  (generations): Maximum number of generations.  
+-p  (pop_size): Size of the population pool.  
+-t  (time): Experiment duration in seconds.  
+-k  (evaluations): Number of trials per individual per generation.  
+-w  (workers): Number of parallel CPU workers (defaults to max available).  
+
+Advanced Features  
+* Resuming an Experiment  
+To resume from a specific checkpoint, use the orignal experiment's flags along with the -rf flag. The GA will restore the exact state of the population and continue evolution.
+```
+python3 ga.py -f (xml_file) -rf gapy_saves/(path_to_checkpoint).pkl
+```
+```
+python3 ga.py -f Clustered_CPFA_r64_tag512_16by16.xml -g 150 -p 50 -k 10 -rf gapy_saves/Clustered_CP...(path to checkpoint).../filename.pkl
+```
+* Evaluation Mode (Final Exam)  
+To test specific parameters from a CSV without evolving the population, use the --eval-csv and --trials flags. This runs a fixed individual through multiple trials to gather statistical results.
+The CSV should contain two rows: headers and values to be tested...
+```
+ProbabilityOfReturn..., Prob..., ..., seed
+0.001604..., 0.074..., ..., 26086...
+```
+To run the evaluation use either   
+```
+python3 ga.py -f (xml_file) --eval-csv (path_to_parameters).csv --trials 100
+```
+or
+```
+python3 ga.py -f (xml_file) -ev (path_to_parameters).csv -evt 100
+```
+* Visual Instrumentation
+
+Timestamps: All console outputs and logs include high-precision timestamps.
+
+Progress Bars: Real-time progress monitoring is provided via tqdm during both evolution and evaluation modes.
+
+Note: When running in evaluation mode, the script requires a valid CSV input. If the file is not found, the program will terminate with an error to prevent data corruption.
+#
+#
 ###Useful Links
 
 | Description                                | Website                                                        |
