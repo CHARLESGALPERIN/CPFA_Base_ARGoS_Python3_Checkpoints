@@ -110,7 +110,7 @@ def mutate_parameters(argos_xml, probability):
                 if val<0: val = -val
             else:
                 val += PARAMETER_LIMITS[key][1]*np.random.normal(0, 0.02)  # It should be scaled by the range of each parameter 10/12/2015
-	        while(val > PARAMETER_LIMITS[key][1] or val < PARAMETER_LIMITS[key][0]):
+                while(val > PARAMETER_LIMITS[key][1] or val < PARAMETER_LIMITS[key][0]):
                     if val > PARAMETER_LIMITS[key][1]:
                         val = 2*PARAMETER_LIMITS[key][1]-val
                     elif val < PARAMETER_LIMITS[key][0]:
@@ -256,11 +256,11 @@ if __name__ == "__main__":
             robots=args.robots
         if args.system:
             system = args.system
-        print create_argos_from_paramters(pop[0], sradius, robots, length, system)
+        print(create_argos_from_paramters(pop[0], sradius, robots, length, system))
     elif args.all:
         for p in pop:
-            print "Fitness:", p["fitness"]
-            print xml_string_parameter_chunk(p)
+            print("Fitness:", p["fitness"])
+            print(xml_string_parameter_chunk(p))
     else:
-        print "Fitness:", pop[0]["fitness"]
-        print xml_string_parameter_chunk(pop[0])
+        print("Fitness:", pop[0]["fitness"])
+        print(xml_string_parameter_chunk(pop[0]))
