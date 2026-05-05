@@ -500,7 +500,6 @@ class iAntGA(object):
                 del self.not_evolved_count[-1]
                 count -= 1
         self.current_gen += 1
-        # (4/19/2026) Charles Galperin
         # Checkpoint created after the computation of a generation
         self.save_state()
 
@@ -574,8 +573,6 @@ class iAntGA(object):
             self.population_data.append(data)
             #population_data2.append(data2)
             #print data
-        # (4/19/2026) Charles Galperin
-        # Python3 fix
         data_keys = sorted(list(argos_util.PARAMETER_LIMITS.keys()) + ["fitness", "seed"])
 
         #data_keys2 = argos_util.controller_params_LIMITS.keys()
@@ -608,7 +605,10 @@ class iAntGA(object):
         with Pool(processes=self.num_workers) as pool:
             results = list(tqdm(pool.imap(run_argos_simulation, tasks),
                                 total=len(tasks),
-                                desc="Evaluation Trials"))
+                                desc="Evaluation Trials",
+                                ncols=64,
+                                position=0,
+                                leave=True))
 
         # Calculate results
         avg_fitness = sum(results) / len(results)
@@ -660,14 +660,10 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--time', action='store', dest='time', type=int)
     parser.add_argument('-k', '--tests_per_gen', action='store', dest='tests_per_gen', type=int)
     parser.add_argument('-o', '--terminateFlag', action='store', dest='terminateFlag', type=int)
-    # (4/19/2026) Charles Galperin
-    # flag added for loading checkpoint files
     parser.add_argument('-rf', '--resume_file', action='store', dest='resume_file',
                         help='Path to a .pkl checkpoint file')
-    # (4/24/2026) Charles Galperin
     parser.add_argument("-w", "--workers", action='store', dest='num_workers', default=os.cpu_count() or 4,
                         help="Number of parallel workers (default: # of CPUs)", type=int)
-    # (4/25/2026) Charles Galperin
     parser.add_argument('-ev','--eval-csv', action='store', dest='eval_csv',
                         help="CSV file with best parameters")
     parser.add_argument('-evt','--trials', action='store', default=10,
